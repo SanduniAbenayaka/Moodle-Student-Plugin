@@ -26,54 +26,6 @@ function get_date_options() {
     return $log['labels'];
 }
 
-// function block_graph_get_selected_semester($courseid){
-//     global $DB,$course;
-//     $course_id=$courseid;
-
-//     $course = $DB->get_records_sql("SELECT category FROM {course} WHERE id='$course_id'");
-    
-//     foreach ($course as $c=>$fullname) {
-//         $semester_id =$fullname->category; 
-//         echo $semester_id; 
-                   
-// }
-
-//     return $course_list;
-// }
-
-// function block_graph_get_semester_course($courseid){
-//     global $DB,$course_list;
-//     $course_list=array();
-//     $i=0;
-//     $course = $DB->get_records_sql("SELECT id FROM {course} WHERE category =(SELECT category FROM {course} WHERE id='$course_id')");
-    
-//     foreach ($course as $c=>$fullname) {
-//         $course_list[$i] =$fullname->id;
-//         $i++;   
-                   
-// }
-//     return $course_list;
-// }
-
-//get courses names from course table
-// function get_course_names($semester_id ){  
-
-//     global $CFG,$DB,$i;
-//     $label=array();
-//     $label2=array();
-//     $i=0;
-   
-//     $course_loga=$DB->get_records_sql("SELECT id,fullname,startdate,shortname FROM {course} WHERE category ='$semester_id' AND id IN '$course_elist'"); 
-   
-//     foreach ($course as $c=>$fullname) {
-//             $label[$i] =$fullname->fullname;
-//             $label2[$i] =$fullname->id;
-
-//             $i++;              
-//     }
-  
-//     return $label;
-// }
 
 function block_graph_get_enrol_course($userid,$courseid){
     global $DB,$course,$instance,$CFG,$semester_id,$course_elist;
@@ -112,11 +64,13 @@ function block_graph_get_enrol_course($userid,$courseid){
     
     foreach ($course as $c=>$fullname) {
         $semester_id =$fullname->category; 
-        echo $semester_id; 
+        $semester_id.'<br>'; 
                    
     }
-    $course_loga=$DB->get_records_sql("SELECT id,fullname,startdate,shortname FROM {course} WHERE category='$semester_id'  AND 
-    id IN ('2','3','4')");
+    foreach($course_elist as $list)
+    {
+        $course_loga=$DB->get_records_sql("SELECT id,fullname,startdate,shortname FROM {course} WHERE category='$semester_id'  AND 
+        id =$list");
 
     /*$course_loga=$DB->get_records_sql("SELECT id,fullname,startdate,shortname FROM {course} WHERE category='$semester_id' AND 
     id IN 
@@ -124,11 +78,12 @@ function block_graph_get_enrol_course($userid,$courseid){
     (SELECT instanceid FROM {context} WHERE id IN 
     (SELECT * FROM {role_assignments} WHERE  roleid='5' AND userid='$userid')  )) "); */
    
-    foreach ($course_loga as $c=>$fullname) {
-            //$label[$i] =$fullname->fullname;
-            echo $label[$i] =$fullname->id;
+        foreach ($course_loga as $c=>$fullname) {
+                    //$label[$i] =$fullname->fullname;
+            $label[$i] =$fullname->id;
 
             $i++;              
+        }
     }
     return $label;
 }
@@ -139,12 +94,15 @@ function get_course_names($subjects){
     $label=array();
     $i=0;
    
-    $course=$DB->get_records_sql("SELECT fullname,startdate,shortname FROM {course} WHERE id IN ('2','3','4') "); 
-   
-    foreach ($course as $c=>$fullname) {
-            $label[$i] =$fullname->fullname;
-            $i++;              
-    }
+    foreach ($subjects as $s) {
+     
+        $course=$DB->get_records_sql("SELECT fullname,startdate,shortname FROM {course} WHERE id =$s "); 
+    
+        foreach ($course as $c=>$fullname) {
+                $label[$i] =$fullname->fullname;
+                $i++;              
+        }
+    }   
   
     return $label;
 }

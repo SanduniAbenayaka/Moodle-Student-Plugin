@@ -18,9 +18,7 @@ function quiz($userid,$courseid){
         global $DB,$CFG, $OUTPUT;
         $marks=get_courseid($courseid,$userid);
         $course=course_names($userid,$courseid);
-        //$cname=$DB->get_record_sql("SELECT fullname from {course} where id='$courseid'");
-        // $username=$DB->get_record_sql("SELECT username from {user} where id='$userid'");
-        // echo $a=$this->USER->username;
+        
         
         $chart = new \core\chart_line();
         //for($i=0;$i<count($course);$i++){
@@ -28,7 +26,7 @@ function quiz($userid,$courseid){
             $chart->add_series($series);
         //}
         $chart->set_labels($course);
-        $chart->set_title("Quiz result of Student  ");;
+        $chart->set_title("Your quizes results for this subject");;
         $yaxis = $chart->get_yaxis(0, true);
         $yaxis->set_label('Marks');
         $yaxis->set_stepsize(max(1, round($max / 10)));
@@ -86,7 +84,7 @@ function get_activity_details($userid,$courseid){
 
 $chart->set_labels($course_loga);
 $yaxis = $chart->get_yaxis(0, true);
-$yaxis->set_label('number of logins');
+$yaxis->set_label('number of actoins');
 $yaxis->set_stepsize(max(1, round($max / 10)));
 
 echo $OUTPUT->render($chart);
